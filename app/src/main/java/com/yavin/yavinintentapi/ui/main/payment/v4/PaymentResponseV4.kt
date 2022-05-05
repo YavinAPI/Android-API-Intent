@@ -16,8 +16,10 @@ data class PaymentResponseV4(
     var cardToken: String? = null,
     @SerializedName("cartId")
     var cartId: String? = null,
-    @SerializedName("clientTicket")
-    var clientTicket: String? = null,
+    @SerializedName("clientCardTicket")
+    var clientCardTicket: String? = null,
+    @SerializedName("merchantCardTicket")
+    var merchantCardTicket: String? = null,
     @SerializedName("currencyCode")
     var currencyCode: String? = null,
     @SerializedName("customer")
