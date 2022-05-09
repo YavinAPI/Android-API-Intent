@@ -8,15 +8,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.yavin.yavinintentapi.databinding.FragmentPaymentBinding
+import com.yavin.yavinintentapi.ui.main.api.v1.payment.PaymentRequestV1
+import com.yavin.yavinintentapi.ui.main.api.v1.payment.PaymentResponseV1
+import com.yavin.yavinintentapi.ui.main.api.v4.payment.PaymentRequestV4
+import com.yavin.yavinintentapi.ui.main.api.v4.payment.PaymentResponseV4
 import com.yavin.yavinintentapi.ui.main.model.ApiVersion
 import com.yavin.yavinintentapi.ui.main.model.Customer
-import com.yavin.yavinintentapi.ui.main.payment.v1.PaymentRequestV1
-import com.yavin.yavinintentapi.ui.main.payment.v1.PaymentResponseV1
-import com.yavin.yavinintentapi.ui.main.payment.v4.PaymentRequestV4
-import com.yavin.yavinintentapi.ui.main.payment.v4.PaymentResponseV4
+import com.yavin.yavinintentapi.ui.main.model.ReceiptTicket
 
 class PaymentFragment : Fragment() {
 
@@ -35,25 +38,69 @@ class PaymentFragment : Fragment() {
         _binding = FragmentPaymentBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val v1 = binding.v1
-        v1.setOnClickListener {
-            paymentApiV1()
+        apiVersion = ApiVersion.V1
+        binding.apiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                apiVersion = ApiVersion.fromCode(parent?.getItemAtPosition(position).toString())
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
         }
 
-        val v4 = binding.v4
-        v4.setOnClickListener {
-            paymentApiV4()
+        binding.startPaymentButton.setOnClickListener {
+            when (apiVersion) {
+                ApiVersion.V4 -> paymentApiV4()
+                ApiVersion.V1 -> paymentApiV1()
+                else -> Toast.makeText(
+                    requireContext(),
+                    "Implementation doesn't exist",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         return root
     }
 
     private fun paymentApiV4() {
-        apiVersion = ApiVersion.V4
+        val amount = if(binding.amountEditText.text.toString().isEmpty()) {
+            0
+        } else {
+            binding.amountEditText.text.toString().toInt()
+        }
+
+        if(amount == 0) {
+            Toast.makeText(requireContext(), "Amount must be > 0", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val giftAmount = if(binding.giftAmountEditText.text.toString().isEmpty()) {
+            0
+        } else {
+            binding.giftAmountEditText.text.toString().toInt()
+        }
 
         val paymentRequest = PaymentRequestV4(
-            amount = 100,
-            customer = Customer("Pierre", "Ghaz", "pierre@yavin.com")
+            amount = amount,
+            giftAmount = giftAmount,
+            transactionType = binding.transactionTypeSpinner.selectedItem.toString(),
+            receiptTicket = ReceiptTicket(
+                data = binding.dataEditText.text.toString(),
+                format = binding.formatSpinner.selectedItem.toString()
+            ),
+            reference = binding.referenceEditText.text.toString(),
+            customer = Customer(
+                binding.firstnameEditText.text.toString(),
+                binding.lastnameEditText.text.toString(),
+                binding.emailEditText.text.toString(),
+                binding.phoneEditText.text.toString()
+            )
         )
 
         val jsonData = gson.toJson(paymentRequest)
@@ -66,13 +113,25 @@ class PaymentFragment : Fragment() {
     }
 
     private fun paymentApiV1() {
-        apiVersion = ApiVersion.V1
+        val firstName = binding.firstnameEditText.text.toString()
+        val lastName =binding.lastnameEditText.text.toString()
+        val email = binding.emailEditText.text.toString()
+        val phone = binding.phoneEditText.text.toString()
+
+        val amount = binding.amountEditText.text.toString().ifEmpty {
+            "0"
+        }
+
+        if(amount.toInt() == 0) {
+            Toast.makeText(requireContext(), "Amount must be > 0", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val paymentRequest = PaymentRequestV1(
-            amount = "100",
-            currency = "EUR",
-            transactionType = "Debit",
-            client = "{\"email\":\"pierre@yavin.com\",\"firstName\":\"Pierre\",\"lastName\":\"Ghazal\"}"
+            amount = amount,
+            transactionType = binding.transactionTypeSpinner.selectedItem.toString(),
+            reference = binding.referenceEditText.text.toString(),
+            client = "{\"email\":\"$email\",\"firstName\":\"$firstName\",\"lastName\":\"$lastName\", \"phone\":\"$phone\"}"
         )
 
         val intent = Intent()
@@ -80,7 +139,6 @@ class PaymentFragment : Fragment() {
             ComponentName("com.yavin.macewindu", "com.yavin.macewindu.PaymentActivity")
         intent.putExtra("vendorToken", paymentRequest.vendorToken)
         intent.putExtra("amount", paymentRequest.amount)
-        intent.putExtra("currency", paymentRequest.currency)
         intent.putExtra("transactionType", paymentRequest.transactionType)
         intent.putExtra("reference", paymentRequest.reference)
         intent.putExtra("client", paymentRequest.client)
@@ -91,7 +149,7 @@ class PaymentFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(data == null) return
+        if (data == null) return
 
         if (requestCode == REQUEST_CODE_PAYMENT) {
             when (apiVersion) {
@@ -111,6 +169,7 @@ class PaymentFragment : Fragment() {
         val response = gson.fromJson(json, PaymentResponseV4::class.java)
 
         Log.d("PaymentFragment", response.toString())
+        binding.resultTextView.text = response.toString()
     }
 
 
@@ -128,6 +187,7 @@ class PaymentFragment : Fragment() {
         )
 
         Log.d("PaymentFragment", response.toString())
+        binding.resultTextView.text = response.toString()
     }
 
     override fun onDestroyView() {

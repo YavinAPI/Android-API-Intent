@@ -1,4 +1,4 @@
-package com.yavin.yavinintentapi.ui.main.payment.v1
+package com.yavin.yavinintentapi.ui.main.api.v1.payment
 
 
 import com.google.gson.annotations.SerializedName

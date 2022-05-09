@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.yavin.yavinintentapi.databinding.ActivityMainBinding
 import com.yavin.yavinintentapi.ui.main.payment.PaymentFragment
 import com.yavin.yavinintentapi.ui.main.ViewPagerAdapter
+import com.yavin.yavinintentapi.ui.main.print.PrintFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,8 @@ class MainActivity : AppCompatActivity() {
         val viewPager: ViewPager2 = binding.viewPager
 
         val fragments = arrayListOf(
-            PaymentFragment.newInstance()
+            PaymentFragment.newInstance(),
+            PrintFragment.newInstance()
         )
 
         val adapter = ViewPagerAdapter(this, fragments)

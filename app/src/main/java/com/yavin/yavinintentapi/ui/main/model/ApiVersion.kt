@@ -8,7 +8,7 @@ enum class ApiVersion(val version: String) {
     companion object {
         fun fromCode(code: String?): ApiVersion {
             for (apiVersion in values()) {
-                if (apiVersion.version == code) {
+                if (apiVersion.version.equals(code, true)) {
                     return apiVersion
                 }
             }

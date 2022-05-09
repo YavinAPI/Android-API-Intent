@@ -1,4 +1,4 @@
-package com.yavin.yavinintentapi.ui.main.payment.v1
+package com.yavin.yavinintentapi.ui.main.api.v1.payment
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
