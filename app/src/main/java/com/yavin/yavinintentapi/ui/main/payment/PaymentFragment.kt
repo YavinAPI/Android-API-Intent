@@ -165,7 +165,7 @@ class PaymentFragment : Fragment() {
     }
 
     private fun getPaymentResponseV4(data: Intent) {
-        val json = data.extras?.getString("transaction")
+        val json = data.extras?.getString("response")
         val response = gson.fromJson(json, PaymentResponseV4::class.java)
 
         Log.d("PaymentFragment", response.toString())
@@ -196,7 +196,7 @@ class PaymentFragment : Fragment() {
     }
 
     companion object {
-        const val REQUEST_CODE_PAYMENT = 123
+        private const val REQUEST_CODE_PAYMENT = 123
 
         @JvmStatic
         fun newInstance(): PaymentFragment {

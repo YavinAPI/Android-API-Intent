@@ -7,6 +7,7 @@ import com.yavin.yavinintentapi.databinding.ActivityMainBinding
 import com.yavin.yavinintentapi.ui.main.payment.PaymentFragment
 import com.yavin.yavinintentapi.ui.main.ViewPagerAdapter
 import com.yavin.yavinintentapi.ui.main.print.PrintFragment
+import com.yavin.yavinintentapi.ui.main.transactions.TransactionsFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,8 @@ class MainActivity : AppCompatActivity() {
 
         val fragments = arrayListOf(
             PaymentFragment.newInstance(),
-            PrintFragment.newInstance()
+            PrintFragment.newInstance(),
+            TransactionsFragment.newInstance(),
         )
 
         val adapter = ViewPagerAdapter(this, fragments)

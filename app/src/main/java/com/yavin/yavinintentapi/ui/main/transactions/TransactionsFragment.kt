@@ -1,4 +1,4 @@
-package com.yavin.yavinintentapi.ui.main.print
+package com.yavin.yavinintentapi.ui.main.transactions
 
 import android.content.Intent
 import android.net.Uri
@@ -11,14 +11,14 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import com.yavin.yavinintentapi.databinding.FragmentPrintBinding
-import com.yavin.yavinintentapi.ui.main.api.v4.print.PrintRequestV4
-import com.yavin.yavinintentapi.ui.main.api.v4.print.PrintResponseV4
+import com.yavin.yavinintentapi.databinding.FragmentTransactionsBinding
+import com.yavin.yavinintentapi.ui.main.api.v4.transactions.TransactionsRequestV4
+import com.yavin.yavinintentapi.ui.main.api.v4.transactions.TransactionsResponseV4
 import com.yavin.yavinintentapi.ui.main.model.ApiVersion
 
-class PrintFragment : Fragment() {
+class TransactionsFragment : Fragment() {
 
-    private var _binding: FragmentPrintBinding? = null
+    private var _binding: FragmentTransactionsBinding? = null
     private val binding get() = _binding!!
 
     private val gson = Gson()
@@ -30,12 +30,17 @@ class PrintFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentPrintBinding.inflate(inflater, container, false)
+        _binding = FragmentTransactionsBinding.inflate(inflater, container, false)
         val root = binding.root
 
         apiVersion = ApiVersion.V1
         binding.apiSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 apiVersion = ApiVersion.fromCode(parent?.getItemAtPosition(position).toString())
             }
 
@@ -43,36 +48,30 @@ class PrintFragment : Fragment() {
             }
         }
 
-        binding.printButton.setOnClickListener {
-            when(apiVersion) {
-                ApiVersion.V4 -> printApiV4()
-                else -> Toast.makeText(requireContext(), "Implementation ${apiVersion.version} doesn't exist", Toast.LENGTH_SHORT).show()
+        binding.fetchTransactionsButton.setOnClickListener {
+            when (apiVersion) {
+                ApiVersion.V4 -> fetchTransactionsApiV4()
+
+                else -> Toast.makeText(
+                    requireContext(),
+                    "Implementation ${apiVersion.version} doesn't exist",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
         return root
     }
 
-    private fun printApiV4() {
-        val dataToPrint = binding.dataEditText.text.toString()
-
-        if(dataToPrint.isEmpty()) {
-            Toast.makeText(requireContext(), "Missing data to print", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val request = PrintRequestV4(
-            data = dataToPrint,
-            format = binding.formatSpinner.selectedItem.toString()
-        )
-
+    private fun fetchTransactionsApiV4() {
+        val request = TransactionsRequestV4()
         val jsonData = gson.toJson(request)
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("yavin://com.yavin.macewindu/v4/print?data=$jsonData")
+            data = Uri.parse("yavin://com.yavin.macewindu/v4/transactions?data=$jsonData")
         }
 
-        startActivityForResult(intent, REQUEST_CODE_PRINT)
+        startActivityForResult(intent, REQUEST_CODE_TRANSACTIONS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -80,20 +79,20 @@ class PrintFragment : Fragment() {
 
         if (data == null) return
 
-        if (requestCode == REQUEST_CODE_PRINT) {
+        if (requestCode == REQUEST_CODE_TRANSACTIONS) {
             when (apiVersion) {
                 ApiVersion.V4 -> {
-                    getPrintResponseV4(data)
+                    getTransactionsResponseV4(data)
                 }
             }
         }
     }
 
-    private fun getPrintResponseV4(data: Intent) {
+    private fun getTransactionsResponseV4(data: Intent) {
         val json = data.extras?.getString("response")
-        val response = gson.fromJson(json, PrintResponseV4::class.java)
+        val response = gson.fromJson(json, TransactionsResponseV4::class.java)
 
-        Log.d("PrintFragment", response.toString())
+        Log.d("TransactionsFragment", response.toString())
         binding.resultTextView.text = response.toString()
     }
 
@@ -103,11 +102,11 @@ class PrintFragment : Fragment() {
     }
 
     companion object {
-        private const val REQUEST_CODE_PRINT = 124
+        private const val REQUEST_CODE_TRANSACTIONS = 125
 
         @JvmStatic
-        fun newInstance(): PrintFragment {
-            return PrintFragment()
+        fun newInstance(): TransactionsFragment {
+            return TransactionsFragment()
         }
     }
 }

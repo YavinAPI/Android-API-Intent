@@ -11,6 +11,7 @@ import com.yavin.yavinintentapi.R
 private val TAB_TITLES = arrayOf(
     R.string.tab_payment,
     R.string.tab_print,
+    R.string.tab_transactions,
     R.string.tab_share
 )
 

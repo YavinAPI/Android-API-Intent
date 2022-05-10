@@ -15,25 +15,13 @@
             android:layout_height="48dp"
             android:entries="@array/api_versions" />
 
-        <Spinner
-            android:id="@+id/formatSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:entries="@array/print_format" />
-
-        <EditText
-            android:id="@+id/dataEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_print_data" />
-
         <Button
-            android:id="@+id/printButton"
+            android:id="@+id/fetchTransactionsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginTop="16dp"
-            android:text="@string/print" />
+            android:text="@string/fetch_transactions" />
 
         <TextView
             android:id="@+id/resultTextView"
