@@ -7,6 +7,7 @@ import com.yavin.yavinintentapi.databinding.ActivityMainBinding
 import com.yavin.yavinintentapi.ui.main.payment.PaymentFragment
 import com.yavin.yavinintentapi.ui.main.ViewPagerAdapter
 import com.yavin.yavinintentapi.ui.main.print.PrintFragment
+import com.yavin.yavinintentapi.ui.main.share.ShareFragment
 import com.yavin.yavinintentapi.ui.main.transactions.TransactionsFragment
 
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
             PaymentFragment.newInstance(),
             PrintFragment.newInstance(),
             TransactionsFragment.newInstance(),
+            ShareFragment.newInstance(),
         )
 
         val adapter = ViewPagerAdapter(this, fragments)
