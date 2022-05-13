@@ -25,14 +25,14 @@
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
+            android:hint="@string/hint_phone_number"
             android:inputType="phone"
             android:visibility="gone" />
 

@@ -104,9 +104,10 @@ class PaymentFragment : Fragment() {
         )
 
         val jsonData = gson.toJson(paymentRequest)
+        val queryParams = Uri.encode(jsonData)
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("yavin://com.yavin.macewindu/v4/payment?data=$jsonData")
+            data = Uri.parse("yavin://com.yavin.macewindu/v4/payment?data=$queryParams")
         }
 
         startActivityForResult(intent, REQUEST_CODE_PAYMENT)

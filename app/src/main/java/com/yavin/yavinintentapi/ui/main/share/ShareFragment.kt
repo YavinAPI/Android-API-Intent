@@ -121,7 +121,12 @@ class ShareFragment : Fragment() {
                 val phone = binding.phoneEditText.text.toString()
 
                 if (isValidPhone(phone)) {
-                    Customer(phone = phone)
+                    if(phone.startsWith("+")) {
+                        Customer(phone = phone)
+                    } else {
+                        Toast.makeText(requireContext(), "Phone number must starts with + symbol (international format)", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                 } else {
                     null
                 }
@@ -145,9 +150,10 @@ class ShareFragment : Fragment() {
         )
 
         val jsonData = gson.toJson(request)
+        val queryParams = Uri.encode(jsonData)
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("yavin://com.yavin.macewindu/v4/share?data=$jsonData")
+            data = Uri.parse("yavin://com.yavin.macewindu/v4/share?data=$queryParams")
         }
 
         startActivityForResult(intent, REQUEST_CODE_SHARE)

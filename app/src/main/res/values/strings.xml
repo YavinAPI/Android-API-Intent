@@ -18,7 +18,9 @@
     <string name="firstname">Firstname</string>
     <string name="lastname">Lastname</string>
     <string name="email">Email</string>
+    <string name="hint_email">example@email.com</string>
     <string name="phone_number">Phone number</string>
+    <string name="hint_phone_number">+33612345678</string>
     <string name="transaction_id">ID of transaction (check transactions api)</string>
 
     <string-array name="api_versions">

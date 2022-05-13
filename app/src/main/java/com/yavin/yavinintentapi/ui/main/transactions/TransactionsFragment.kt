@@ -66,9 +66,10 @@ class TransactionsFragment : Fragment() {
     private fun fetchTransactionsApiV4() {
         val request = TransactionsRequestV4()
         val jsonData = gson.toJson(request)
+        val queryParams = Uri.encode(jsonData)
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("yavin://com.yavin.macewindu/v4/transactions?data=$jsonData")
+            data = Uri.parse("yavin://com.yavin.macewindu/v4/transactions?data=$queryParams")
         }
 
         startActivityForResult(intent, REQUEST_CODE_TRANSACTIONS)
