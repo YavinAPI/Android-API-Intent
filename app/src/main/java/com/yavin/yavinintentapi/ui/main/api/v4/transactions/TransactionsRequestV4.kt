@@ -3,10 +3,10 @@ package com.yavin.yavinintentapi.ui.main.api.v4.transactions
 import com.google.gson.annotations.SerializedName
 
 data class TransactionsRequestV4(
-    @SerializedName("start_date")
+    @SerializedName("startDate")
     var startDate: String? = null,
 
-    @SerializedName("end_date")
+    @SerializedName("endDate")
     var endDate: String? = null,
 
     @SerializedName("limit")
