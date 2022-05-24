@@ -26,8 +26,10 @@ data class PaymentResponseV4(
     var customer: Customer? = null,
     @SerializedName("giftAmount")
     var giftAmount: Int? = 0,
-    @SerializedName("medium")
-    var medium: String? = null,
+    @SerializedName("scheme")
+    var scheme: String? = null,
+    @SerializedName("issuer")
+    var issuer: String? = null,
     @SerializedName("receiptTicket")
     var receiptTicket: ReceiptTicket? = null,
     @SerializedName("reference")

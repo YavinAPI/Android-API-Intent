@@ -69,18 +69,18 @@ class PaymentFragment : Fragment() {
     }
 
     private fun paymentApiV4() {
-        val amount = if(binding.amountEditText.text.toString().isEmpty()) {
+        val amount = if (binding.amountEditText.text.toString().isEmpty()) {
             0
         } else {
             binding.amountEditText.text.toString().toInt()
         }
 
-        if(amount == 0) {
+        if (amount == 0) {
             Toast.makeText(requireContext(), "Amount must be > 0", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val giftAmount = if(binding.giftAmountEditText.text.toString().isEmpty()) {
+        val giftAmount = if (binding.giftAmountEditText.text.toString().isEmpty()) {
             0
         } else {
             binding.giftAmountEditText.text.toString().toInt()
@@ -115,7 +115,7 @@ class PaymentFragment : Fragment() {
 
     private fun paymentApiV1() {
         val firstName = binding.firstnameEditText.text.toString()
-        val lastName =binding.lastnameEditText.text.toString()
+        val lastName = binding.lastnameEditText.text.toString()
         val email = binding.emailEditText.text.toString()
         val phone = binding.phoneEditText.text.toString()
 
@@ -123,7 +123,7 @@ class PaymentFragment : Fragment() {
             "0"
         }
 
-        if(amount.toInt() == 0) {
+        if (amount.toInt() == 0) {
             Toast.makeText(requireContext(), "Amount must be > 0", Toast.LENGTH_SHORT).show()
             return
         }

@@ -153,7 +153,7 @@ class ShareFragment : Fragment() {
         val queryParams = Uri.encode(jsonData)
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            data = Uri.parse("yavin://com.yavin.macewindu/v4/share?data=$queryParams")
+            data = Uri.parse("yavin://com.yavin.macewindu/v4/share-receipt?data=$queryParams")
         }
 
         startActivityForResult(intent, REQUEST_CODE_SHARE)
