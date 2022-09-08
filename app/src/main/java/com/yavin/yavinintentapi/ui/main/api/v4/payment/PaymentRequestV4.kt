@@ -32,5 +32,7 @@ data class PaymentRequestV4(
     @SerializedName("transactionType")
     var transactionType: String? = null,
     @SerializedName("vendor")
-    var vendor: Vendor? = null
+    var vendor: Vendor? = null,
+    @SerializedName("idempotentUuid")
+    var idempotentUuid: String? = null,
 ) : Parcelable

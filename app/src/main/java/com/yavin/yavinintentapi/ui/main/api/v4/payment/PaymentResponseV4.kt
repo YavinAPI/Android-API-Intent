@@ -39,5 +39,7 @@ data class PaymentResponseV4(
     @SerializedName("transactionId")
     var transactionId: String? = null,
     @SerializedName("transactionType")
-    var transactionType: String? = null
+    var transactionType: String? = null,
+    @SerializedName("idempotentUuid")
+    var idempotentUuid: String? = null,
 ) : Parcelable

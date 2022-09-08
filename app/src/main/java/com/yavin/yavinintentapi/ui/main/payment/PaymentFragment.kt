@@ -100,7 +100,8 @@ class PaymentFragment : Fragment() {
                 binding.lastnameEditText.text.toString(),
                 binding.emailEditText.text.toString(),
                 binding.phoneEditText.text.toString()
-            )
+            ),
+            idempotentUuid = binding.idempotentEditText.text.toString()
         )
 
         val jsonData = gson.toJson(paymentRequest)
