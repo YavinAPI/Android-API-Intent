@@ -168,10 +168,15 @@ class PaymentFragment : Fragment() {
 
     private fun getPaymentResponseV4(data: Intent) {
         val json = data.extras?.getString("response")
-        val response = gson.fromJson(json, PaymentResponseV4::class.java)
 
-        Log.d("PaymentFragment", response.toString())
-        binding.resultTextView.text = response.toString()
+        json?.let {
+            val response = gson.fromJson(it, PaymentResponseV4::class.java)
+
+            if(response != null) {
+                Log.d("PaymentFragment", response.toString())
+                binding.resultTextView.text = response.toString()
+            }
+        }
     }
 
 
